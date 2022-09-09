@@ -9,4 +9,4 @@ if __name__ == '__main__':
     bot = telegram.Bot(token=TELEGRAM_API_KEY)
     chat_id = bot.get_chat('@space_7e1bf756_images')['id']
     
-    bot.send_message(chat_id=chat_id, text="Первый пост!")
+    bot.send_photo(chat_id=chat_id, photo=open('images/nasa_0.jpg', 'rb'))
