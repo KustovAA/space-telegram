@@ -1,4 +1,3 @@
-from argparse import ArgumentParser
 import os
 from random import shuffle
 from time import sleep
@@ -11,7 +10,7 @@ from fetch_nasa_images_of_the_day import fetch_nasa_images_of_the_day
 from fetch_spacex_images import fetch_spacex_images
 
 
-def main(token, chat_name, interval):
+def main(token, chat_name, interval=14400):
     fetch_spacex_images()
     fetch_nasa_epic_images()
     fetch_nasa_images_of_the_day()
@@ -29,13 +28,10 @@ def main(token, chat_name, interval):
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('interval', nargs='?', default=4 * 60 * 60)
-    args = parser.parse_args()
-
     env = Env()
     env.read_env()
     TELEGRAM_BOT_TOKEN = env.str('TELEGRAM_BOT_TOKEN')
     TELEGRAM_CHANNEL_NAME = env.str('TELEGRAM_CHANNEL_NAME')
+    PUBLICATION_INTERVAL = env.int('PUBLICATION_INTERVAL')
 
-    main(token=TELEGRAM_BOT_TOKEN, chat_name=TELEGRAM_CHANNEL_NAME, interval=int(args.interval))
+    main(token=TELEGRAM_BOT_TOKEN, chat_name=TELEGRAM_CHANNEL_NAME, interval=PUBLICATION_INTERVAL)

@@ -13,8 +13,8 @@
 * ```NASA_API_KEY``` - ваш ключ к апи NASA
 * ```TELEGRAM_BOT_TOKEN``` - токен вашего бота в телеграмм
 * ```TELEGRAM_CHANNEL_NAME``` - username вашего канала в телеграмм
+* ```PUBLICATION_INTERVAL``` - интервал между публикациями фото
 
 Команда для запуска:
 
-* ```python main.py [interval - промежуток между публикациями фото в канал в секундах, по умолчанию 4 часа]```
-
+* ```python main.py```
