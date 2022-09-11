@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from os import path
 
 import requests
 
@@ -13,9 +14,10 @@ def fetch_spacex_images(id = 'latest'):
 
     images = response.json()['links']['flickr']['original']
 
-    for i in range(len(images)):
-        filename = f'images/spacex_{i}{get_file_ext(images[i])}'
-        fetch_image(images[i], filename, {})
+    for i, image in enumerate(images):
+        filename = path.join('images', f'spacex_{i}{get_file_ext(image)}')
+
+        fetch_image(image, filename, {})
         print(filename, ' is downloaded')
 
 

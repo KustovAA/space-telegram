@@ -4,8 +4,6 @@ import pathlib
 
 import requests
 
-NASA_API_KEY = 'GZtHmyRFjwZcpO6XIKa1jO8u9gRTtGRRaLfbx44i'
-
 def get_file_ext(filename):
     return pathlib.Path(filename).suffix
 
