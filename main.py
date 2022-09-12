@@ -3,19 +3,12 @@ from random import shuffle
 from time import sleep
 
 from environs import Env
+from retry import retry
 import telegram
 
 from fetch_nasa_epic_images import fetch_nasa_epic_images
 from fetch_nasa_images_of_the_day import fetch_nasa_images_of_the_day
 from fetch_spacex_images import fetch_spacex_images
-
-
-def call_with_retry(fn, delay = 0):
-    try:
-        sleep(delay)
-        fn()
-    except:
-        call_with_retry(fn, 1 + 2 ** delay)
 
 
 def main(token, chat_name, nasa_api_key, interval=14400):
@@ -26,9 +19,14 @@ def main(token, chat_name, nasa_api_key, interval=14400):
     bot = telegram.Bot(token=token)
     chat_id = bot.get_chat(chat_name)['id']
 
-    def post_photo(chat_id, photo, interval):
+    @retry(
+        exceptions=telegram.error.TelegramError,
+        delay=1,
+        backoff=2,
+        tries=10
+    )
+    def post_photo(chat_id, photo):
         bot.send_photo(chat_id=chat_id, photo=photo)
-        sleep(interval)
 
     while True:
         files = os.listdir('images')
@@ -37,9 +35,8 @@ def main(token, chat_name, nasa_api_key, interval=14400):
         for filename in files:
             filepath = os.path.join('images', filename)
             with open(filepath, 'rb') as photo:
-                call_with_retry(
-                    lambda: post_photo(chat_id=chat_id, photo=photo, interval=interval)
-                )
+                post_photo(chat_id=chat_id, photo=photo)
+                sleep(interval)
 
 
 if __name__ == '__main__':
