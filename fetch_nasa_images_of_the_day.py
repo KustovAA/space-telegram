@@ -14,9 +14,9 @@ def fetch_nasa_images_of_the_day(api_key, count = 30):
 
     images = response.json()
 
-    for i, image in enumerate(images):
+    for image_index, image in enumerate(images):
         image_url = image['url']
-        filename = path.join('images', f'nasa_{i}{get_file_ext(image_url)}')
+        filename = path.join('images', f'nasa_{image_index}{get_file_ext(image_url)}')
         fetch_image(image_url, filename, {})
         print(filename, ' is downloaded')
 
