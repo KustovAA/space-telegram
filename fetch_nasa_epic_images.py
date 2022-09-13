@@ -17,11 +17,10 @@ def fetch_nasa_epic_images(api_key):
 
     for image_index, image in enumerate(images):
         date = datetime.fromisoformat(image["date"])
-        year = date.year
-        month = date.month
-        day = date.day
+        date_view = f"{date:%Y/%m/%d}"
         ext = "png"
-        image_url = f"https://api.nasa.gov/EPIC/archive/natural/{year}/{month:02}/{day:02}/{ext}/{image['image']}.{ext}"
+        image_url = f"https://api.nasa.gov/EPIC/archive/natural/{date_view}/{ext}/{image['image']}.{ext}"
+        print(image_url, date_view)
         filename = path.join("images", f"nasa_epic_{image_index}.{ext}")
         fetch_image(image_url, filename, {"api_key": api_key})
         print(filename, " is downloaded")
