@@ -1,19 +1,21 @@
 import os
 import pathlib
 
-
 import requests
+
 
 def get_file_ext(filename):
     return pathlib.Path(filename).suffix
 
 
 def fetch_image(url, filename, params):
-    headers = {'User-Agent': 'CoolBot/0.0 (https://example.org/coolbot/; coolbot@example.org)'}
+    headers = {
+        "User-Agent": "CoolBot/0.0 (https://example.org/coolbot/; coolbot@example.org)"
+    }
 
     response = requests.get(url, headers=headers, params=params)
     response.raise_for_status()
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    with open(filename, 'wb') as file:
+    with open(filename, "wb") as file:
         file.write(response.content)
