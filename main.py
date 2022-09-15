@@ -20,8 +20,9 @@ def main(token, chat_name, nasa_api_key, interval=14400):
     chat_id = bot.get_chat(chat_name)["id"]
 
     @retry(exceptions=telegram.error.TelegramError, delay=1, backoff=2, tries=10)
-    def post_photo(chat_id, photo):
-        bot.send_photo(chat_id=chat_id, photo=photo)
+    def post_photo(chat_id, filepath):
+        with open(filepath, "rb") as photo:
+            bot.send_photo(chat_id=chat_id, photo=photo)
 
     while True:
         files = os.listdir("images")
@@ -29,9 +30,8 @@ def main(token, chat_name, nasa_api_key, interval=14400):
 
         for filename in files:
             filepath = os.path.join("images", filename)
-            with open(filepath, "rb") as photo:
-                post_photo(chat_id=chat_id, photo=photo)
-                sleep(interval)
+            post_photo(chat_id=chat_id, filepath=filepath)
+            sleep(interval)
 
 
 if __name__ == "__main__":
